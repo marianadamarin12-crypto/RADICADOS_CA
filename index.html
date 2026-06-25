@@ -19,6 +19,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .topbar-link:hover,.topbar-link.active{background:rgba(255,255,255,.15);color:#fff}
 .topbar-link .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .hero{padding:3rem 2rem 2.5rem;text-align:center;position:relative;background:linear-gradient(135deg,#1A2E6C 0%,#2547A8 60%,#3B66D4 100%)}
+.hero-logo{position:absolute;top:1rem;right:1.5rem;height:38px}
 .hero-eyebrow{display:inline-block;margin-bottom:.6rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:20px}
 .hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:600;color:#fff;margin-bottom:.4rem;line-height:1.2}
 .hero-sub{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:1.8rem}
@@ -51,16 +52,21 @@ td:first-child{text-align:center;font-size:11px;color:var(--text3);font-family:'
 .footer{text-align:center;padding:2.5rem 1rem;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:3rem}
 #denied-overlay{display:none;position:fixed;inset:0;background:rgba(10,15,40,.82);z-index:9999;align-items:center;justify-content:center}
 #btn-subir{display:none;position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:#1A2E6C;color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;align-items:center;justify-content:center}
-@media(max-width:600px){.topbar{padding:0 1rem}.hero{padding:2rem 1rem}.content{padding:1.5rem 1rem}}
+/* Mobile — igual que drt.html */
+@media(max-width:600px){
+  .topbar{padding:0 1rem}
+  .hero{padding:2rem 1rem}
+  .content{padding:1.5rem 1rem}
+  .hero-logo{height:24px !important;top:.6rem !important;right:.75rem !important}
+  .hero>div[style*="width:64px"]{margin-top:1.5rem !important}
+  .hero-kpis{flex-wrap:wrap}
+  .kpi{min-width:70px;flex:1 1 70px}
+}
 </style>
 </head>
 <body>
 
 <nav class="topbar">
-  <img src="Logo.jpg" alt="Logo Acueducto de Bogotá"
-       style="height:32px;opacity:.95;flex-shrink:0;"
-       onerror="this.style.display='none'">
-  <div class="topbar-sep"></div>
   <span class="topbar-title">GCSM · Radicados Pendientes</span>
   <div class="topbar-sep"></div>
   <div class="topbar-links">
@@ -73,6 +79,7 @@ td:first-child{text-align:center;font-size:11px;color:var(--text3);font-family:'
 </nav>
 
 <div class="hero">
+  <img src="Logo.jpg" alt="Logo Acueducto de Bogotá" class="hero-logo">
   <div style="width:64px;height:64px;border-radius:12px;background:#D1FAE5;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:13px;font-weight:700;color:#065F46;letter-spacing:.04em">CA</div>
   <div class="hero-eyebrow">Comunicaciones en Trámite</div>
   <h1>Corredores Ambientales</h1>
@@ -181,9 +188,9 @@ function getVigencia(radicado){
 }
 
 var VIG = {
-  '2024':{ bg:'#DCFCE7', color:'#166534', icon:'✅', label:'CUMPLIDO',            bc:'rgba(52,211,153,.5)',  kc:'#6EE7B7' },
+  '2024':{ bg:'#DCFCE7', color:'#166534', icon:'✅', label:'CUMPLIDO',             bc:'rgba(52,211,153,.5)',  kc:'#6EE7B7' },
   '2025':{ bg:'#FEE2E2', color:'#991B1B', icon:'🔴', label:'ALERTA — AÑO VENCIDO', bc:'rgba(255,100,100,.5)', kc:'#FCA5A5' },
-  '2026':{ bg:'#FEF9C3', color:'#854D0E', icon:'🟡', label:'PENDIENTE',            bc:'rgba(252,211,77,.6)', kc:'#FCD34D' }
+  '2026':{ bg:'#FEF9C3', color:'#854D0E', icon:'🟡', label:'PENDIENTE',             bc:'rgba(252,211,77,.6)',  kc:'#FCD34D' }
 };
 var ORDER = ['2024','2025','2026'];
 
