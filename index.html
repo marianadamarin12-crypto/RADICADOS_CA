@@ -51,12 +51,16 @@ td:first-child{text-align:center;font-size:11px;color:var(--text3);font-family:'
 .footer{text-align:center;padding:2.5rem 1rem;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:3rem}
 #denied-overlay{display:none;position:fixed;inset:0;background:rgba(10,15,40,.82);z-index:9999;align-items:center;justify-content:center}
 #btn-subir{display:none;position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:#1A2E6C;color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;align-items:center;justify-content:center}
-@media(max-width:600px){.topbar{padding:0 1rem}.hero{padding:2rem 1rem}.content{padding:1.5rem 1rem}.hero img{height:24px!important;top:.5rem!important;right:.75rem!important}}
+@media(max-width:600px){.topbar{padding:0 1rem}.hero{padding:2rem 1rem}.content{padding:1.5rem 1rem}}
 </style>
 </head>
 <body>
 
 <nav class="topbar">
+  <img src="Logo.jpg" alt="Logo Acueducto de Bogotá"
+       style="height:32px;opacity:.95;flex-shrink:0;"
+       onerror="this.style.display='none'">
+  <div class="topbar-sep"></div>
   <span class="topbar-title">GCSM · Radicados Pendientes</span>
   <div class="topbar-sep"></div>
   <div class="topbar-links">
@@ -69,7 +73,6 @@ td:first-child{text-align:center;font-size:11px;color:var(--text3);font-family:'
 </nav>
 
 <div class="hero">
-  <img src="Logo.jpg" alt="Logo Acueducto de Bogotá" style="position:absolute;top:1rem;right:1.5rem;height:38px;opacity:.9;" onerror="this.style.display='none'">
   <div style="width:64px;height:64px;border-radius:12px;background:#D1FAE5;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:13px;font-weight:700;color:#065F46;letter-spacing:.04em">CA</div>
   <div class="hero-eyebrow">Comunicaciones en Trámite</div>
   <h1>Corredores Ambientales</h1>
@@ -127,7 +130,6 @@ td:first-child{text-align:center;font-size:11px;color:var(--text3);font-family:'
 <button id="btn-subir" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-/* ---------- Utilidades ---------- */
 document.getElementById('fecha-consulta').textContent =
   new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
 
@@ -143,7 +145,6 @@ document.getElementById('denied-overlay').addEventListener('click',function(e){
   if(e.target === this) this.style.display = 'none';
 });
 
-/* ---------- Parser CSV ---------- */
 function parseCSV(text){
   text = text.replace(/^\uFEFF/,'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
   var lines = text.trim().split('\n');
@@ -174,25 +175,21 @@ function splitLine(line){
   return result;
 }
 
-/* ---------- Detectar vigencia ---------- */
 function getVigencia(radicado){
   var m = radicado.match(/\b(20\d{2})\b/);
   return m ? m[1] : 'OTRO';
 }
 
-/* ---------- Config por vigencia ---------- */
 var VIG = {
-  '2024':{ bg:'#DCFCE7', color:'#166534', icon:'✅', label:'CUMPLIDO',       bc:'rgba(52,211,153,.5)',  kc:'#6EE7B7' },
+  '2024':{ bg:'#DCFCE7', color:'#166534', icon:'✅', label:'CUMPLIDO',            bc:'rgba(52,211,153,.5)',  kc:'#6EE7B7' },
   '2025':{ bg:'#FEE2E2', color:'#991B1B', icon:'🔴', label:'ALERTA — AÑO VENCIDO', bc:'rgba(255,100,100,.5)', kc:'#FCA5A5' },
-  '2026':{ bg:'#FEF9C3', color:'#854D0E', icon:'🟡', label:'PENDIENTE',      bc:'rgba(252,211,77,.6)', kc:'#FCD34D' }
+  '2026':{ bg:'#FEF9C3', color:'#854D0E', icon:'🟡', label:'PENDIENTE',            bc:'rgba(252,211,77,.6)', kc:'#FCD34D' }
 };
 var ORDER = ['2024','2025','2026'];
 
-/* ---------- Render ---------- */
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function render(rows){
-  /* Agrupar */
   var groups = {};
   ORDER.forEach(function(y){ groups[y]=[]; });
   rows.forEach(function(r){
@@ -205,7 +202,6 @@ function render(rows){
     groups[vig].push({rad:rad.trim(), resp:resp.trim(), asunto:asunto.trim()});
   });
 
-  /* KPIs */
   var total = rows.length;
   document.getElementById('kpi-total').textContent = total;
   ORDER.forEach(function(y){
@@ -216,7 +212,6 @@ function render(rows){
       (n===0 && y==='2024') ? 'CUMPLIDO' : (n===0 ? 'SIN PEND.' : '⚠ '+cfg.label.split(' ')[0]);
   });
 
-  /* Tablas */
   var html = '';
   ORDER.forEach(function(y){
     var items = groups[y] || [];
@@ -251,7 +246,6 @@ function render(rows){
   document.getElementById('main-content').innerHTML = html;
 }
 
-/* ---------- Exportar Excel ---------- */
 function exportToExcel(){
   try{
     var tables  = document.querySelectorAll('table');
@@ -301,7 +295,6 @@ function exportToExcel(){
   }catch(e){ alert('Error al exportar: '+e.message); }
 }
 
-/* ---------- Cargar CSV ---------- */
 fetch('Ca.csv?v=' + Date.now())
   .then(function(r){
     if(!r.ok) throw new Error('HTTP ' + r.status);
